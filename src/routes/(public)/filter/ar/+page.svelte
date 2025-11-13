@@ -2016,6 +2016,30 @@ async function shareContent() {
       nextElement.style.display = "flex";
     }
   }
+
+  // Function to open WhatsApp directly
+  async function openWhatsApp() {
+    const whatsappUrl = "https://wa.me/";
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    if (isIOS) {
+      window.location.href = whatsappUrl;
+    } else {
+      window.open(whatsappUrl, "_blank");
+    }
+  }
+
+  // Function to open Facebook directly
+  async function openFacebook() {
+    const facebookUrl = "https://www.facebook.com/";
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    if (isIOS) {
+      window.location.href = facebookUrl;
+    } else {
+      window.open(facebookUrl, "_blank");
+    }
+  }
 </script>
 
 <svelte:head>
@@ -2054,8 +2078,12 @@ async function shareContent() {
         <h2 class="preview-title">
           <!-- {#if capturedImg}<Camera /> Photo{:else}<Video /> Video{/if} -->
         </h2>
-        <div></div>
-        <!-- Spacer for centering -->
+        <button
+          class="save-btn-top"
+          on:click={() => (capturedImg ? downloadImage() : downloadVideo())}
+        >
+          <img src="/Save.svg" alt="Save" />
+        </button>
       </div>
 
       <div class="preview-content">
@@ -2089,24 +2117,21 @@ async function shareContent() {
       </div>
 
       <div class="preview-actions">
-        <button
-          class="action-btn save-btn"
-          on:click={() => (capturedImg ? downloadImage() : downloadVideo())}
-        >
-          <span class="btn-icon"><img src="/Save.svg" alt="Download" /></span>
-          <span class="btn-text">Save</span>
-        </button>
         <button class="action-btn share-btn" on:click={shareContent}>
           <span class="btn-icon"><img src="/Share.svg" alt="Share" /></span>
           <span class="btn-text">Share</span>
         </button>
+        <button class="action-btn whatsapp-btn" on:click={openWhatsApp}>
+          <span class="btn-icon whatsapp-icon">📱</span>
+          <span class="btn-text">WhatsApp</span>
+        </button>
+        <button class="action-btn facebook-btn" on:click={openFacebook}>
+          <span class="btn-icon facebook-icon">F</span>
+          <span class="btn-text">Facebook</span>
+        </button>
         <button class="action-btn filters-btn" on:click={showUserFilters}>
           <span class="btn-icon"><img src="/filter.svg" alt="Filters" /></span>
           <span class="btn-text">Filters</span>
-        </button>
-        <button class="action-btn retake-btn" on:click={goBackToCamera}>
-          <span class="btn-icon"><img src="/Retake.svg" alt="Retake" /></span>
-          <span class="btn-text">Retake</span>
         </button>
       </div>
     </div>
@@ -2924,6 +2949,31 @@ async function shareContent() {
     background: rgba(255, 255, 255, 0.3);
   }
 
+  .save-btn-top {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 22px;
+    background: rgba(52, 152, 219, 0.8);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(52, 152, 219, 1);
+  }
+
+  .save-btn-top:active {
+    transform: scale(0.95);
+    background: rgba(52, 152, 219, 1);
+  }
+
+  .save-btn-top img {
+    width: 20px;
+    height: 20px;
+  }
+
   .back-icon {
     font-size: 20px;
     font-weight: bold;
@@ -3058,6 +3108,16 @@ async function shareContent() {
   .filters-btn .btn-icon {
     background: rgba(155, 89, 182, 0.8);
     border-color: rgba(155, 89, 182, 1);
+  }
+
+  .whatsapp-btn .btn-icon {
+    background: rgba(37, 211, 102, 0.8);
+    border-color: rgba(37, 211, 102, 1);
+  }
+
+  .facebook-btn .btn-icon {
+    background: rgba(24, 119, 242, 0.8);
+    border-color: rgba(24, 119, 242, 1);
   }
 
   /* Filters Modal Styles */
